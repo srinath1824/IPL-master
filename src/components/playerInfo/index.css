@@ -1,0 +1,11 @@
+@media screen and (max-width: 600px) {
+  .playerDetails {
+    text-align: center;
+  }
+  .playerInfo {
+    justify-content: center;
+  }
+  .MatchesInfo {
+    margin: 20px 0px;
+  }
+}
