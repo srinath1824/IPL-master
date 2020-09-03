@@ -15,7 +15,7 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      donationPopup: true
+      donationPopup: true,
     };
   }
 
@@ -55,16 +55,16 @@ class Dashboard extends Component {
       this.props.getTeamSelected(this.props.iplTeams[team.name]);
       this.props.teamsSelected({
         name: team.name,
-        players: this.props.iplTeams[team.name]
+        players: this.props.iplTeams[team.name],
       });
     } else {
       await teamsDataApiCall(team.name)
-        .then(res => {
+        .then((res) => {
           this.props.loadingSelected(false);
           this.props.getTeamSelected(res.data);
           this.props.teamsSelected({ name: team.name, players: res.data });
         })
-        .catch(err => console.log("error"));
+        .catch((err) => console.log("error"));
     }
     this.props.history.push("teams");
   }
@@ -78,15 +78,15 @@ class Dashboard extends Component {
         <CardContent
           className="cards"
           style={{
-            height: "300px",
-            background: team.color
+            height: "320px",
+            background: team.color,
           }}
         >
           <div
             style={{
               height: "14rem",
               display: "flex",
-              justifyContent: "center"
+              justifyContent: "center",
             }}
           >
             <CardMedia>
@@ -111,7 +111,7 @@ class Dashboard extends Component {
                   padding: "0 1rem .4rem",
                   display: "inline-block",
                   color: "#e2d612",
-                  fontWeight: "700"
+                  fontWeight: "700",
                   // textAlign: "center"
                 }}
               >
@@ -149,7 +149,7 @@ class Dashboard extends Component {
               name: "CSK",
               color: "linear-gradient(136deg,#fdb913,#f85c00)",
               win: "2010,2011,2018",
-              image: process.env.PUBLIC_URL + "/captains/dhoni.png"
+              image: process.env.PUBLIC_URL + "/captains/dhoni.png",
             })}
           </Grid>
           <Grid item xs={12} sm={4} lg={3}>
@@ -158,7 +158,7 @@ class Dashboard extends Component {
               name: "DC",
               color: "linear-gradient(136deg,#004c93,#0358a7)",
               win: "",
-              image: process.env.PUBLIC_URL + "/captains/sreyas_iyer.png"
+              image: process.env.PUBLIC_URL + "/captains/sreyas_iyer.png",
             })}
           </Grid>
           <Grid item xs={12} sm={4} lg={3}>
@@ -167,7 +167,7 @@ class Dashboard extends Component {
               name: "KXIP",
               color: "linear-gradient(136deg,#aa4545,#740f0b)",
               win: "",
-              image: process.env.PUBLIC_URL + "/captains/kl_rahul.png"
+              image: process.env.PUBLIC_URL + "/captains/kl_rahul.png",
             })}
           </Grid>
           <Grid item xs={12} sm={4} lg={3}>
@@ -176,7 +176,7 @@ class Dashboard extends Component {
               name: "KKR",
               color: "linear-gradient(136deg,#70458f,#3d2057)",
               win: "2012,2014",
-              image: process.env.PUBLIC_URL + "/captains/dinesh_karthik.png"
+              image: process.env.PUBLIC_URL + "/captains/dinesh_karthik.png",
             })}
           </Grid>
 
@@ -186,7 +186,7 @@ class Dashboard extends Component {
               name: "MI",
               color: "linear-gradient(136deg,#005da0,#003a63)",
               win: "2013,2015,2017,2019",
-              image: process.env.PUBLIC_URL + "/captains/rohit.png"
+              image: process.env.PUBLIC_URL + "/captains/rohit.png",
             })}
           </Grid>
           <Grid item xs={12} sm={4} lg={3}>
@@ -195,7 +195,7 @@ class Dashboard extends Component {
               name: "RR",
               color: "linear-gradient(136deg,#2d4d9d,#172e5e)",
               win: "2008",
-              image: process.env.PUBLIC_URL + "/captains/smith.png"
+              image: process.env.PUBLIC_URL + "/captains/smith.png",
             })}
           </Grid>
           <Grid item xs={12} sm={4} lg={3}>
@@ -204,7 +204,7 @@ class Dashboard extends Component {
               name: "RCB",
               color: "linear-gradient(136deg,#000,#464646)",
               win: "",
-              image: process.env.PUBLIC_URL + "/captains/kohli.png"
+              image: process.env.PUBLIC_URL + "/captains/kohli.png",
             })}
           </Grid>
           <Grid item xs={12} sm={4} lg={3}>
@@ -213,7 +213,7 @@ class Dashboard extends Component {
               name: "SRH",
               color: "linear-gradient(136deg,#fb643e,#b81c25)",
               win: "2016",
-              image: process.env.PUBLIC_URL + "/captains/warner.png"
+              image: process.env.PUBLIC_URL + "/captains/warner.png",
             })}
           </Grid>
         </Grid>
@@ -235,18 +235,21 @@ function mapStateToProps(state) {
   return {
     teamSelected: state.dashboard.teamSelected,
     playerSelected: state.dashboard.playerSelected,
-    iplTeams: state.teams
+    iplTeams: state.teams,
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    setTeamSelected: data => dispatch({ type: actionTypes.TEAM_SELECT, data }),
-    getTeamSelected: data => dispatch({ type: actionTypes.SELECT_TEAM, data }),
-    loadingSelected: data => dispatch({ type: actionTypes.LOADING_PAGE, data }),
-    teamsSelected: data => dispatch({ type: actionTypes.TEAMS_SELECT, data }),
-    setJersey: data => dispatch({ type: actionTypes.SET_JERSEY, data }),
-    setPlayerSelected: data =>
-      dispatch({ type: actionTypes.PLAYER_SELECT, data })
+    setTeamSelected: (data) =>
+      dispatch({ type: actionTypes.TEAM_SELECT, data }),
+    getTeamSelected: (data) =>
+      dispatch({ type: actionTypes.SELECT_TEAM, data }),
+    loadingSelected: (data) =>
+      dispatch({ type: actionTypes.LOADING_PAGE, data }),
+    teamsSelected: (data) => dispatch({ type: actionTypes.TEAMS_SELECT, data }),
+    setJersey: (data) => dispatch({ type: actionTypes.SET_JERSEY, data }),
+    setPlayerSelected: (data) =>
+      dispatch({ type: actionTypes.PLAYER_SELECT, data }),
   };
 }
 

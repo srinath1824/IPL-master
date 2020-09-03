@@ -7,6 +7,7 @@ import "./App.css";
 import Form from "./components/forms/form";
 import PlayerInfo from "./components/playerInfo";
 import Compare from "./components/Compares";
+import Stats from "./components/Statistics/stats";
 import Donate from "./components/Donate";
 
 function App() {
@@ -22,18 +23,20 @@ function App() {
             <Route exact path="/playerInfo" render={() => <PlayerInfo />} />
             <Route exact path="/Compare" render={() => <Compare />} />
             <Route exact path="/Donate" render={() => <Donate />} />
+            <Route exact path="/Points" render={() => <Stats />} />
+            <Route exact path="/Dream11" render={() => <Stats />} />
           </div>
         </Switch>
       </Router>
       {/* <div
         style={{
           background: "#19398A",
-          height: "20px",
+          height: "50px",
           textAlign: "center",
           color: "white",
           bottom: "0px",
           width: "100%",
-          position: "fixed"
+          position: "fixed",
         }}
       >
         @Fan made Dream11 analysis application
