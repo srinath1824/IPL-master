@@ -48,6 +48,7 @@ class Dashboard extends Component {
     this.props.setTeamSelected(team.name);
     sessionStorage.setItem("teamSelected", team.name);
     sessionStorage.setItem("jerseyColor", team.color);
+    sessionStorage.setItem("fullTeamName", team.shortName);
     this.props.setJersey(team.color);
     this.props.loadingSelected(true);
     if (this.props.iplTeams[team.name].length > 0) {
@@ -143,7 +144,7 @@ class Dashboard extends Component {
     return (
       <div style={{}}>
         <Grid container spacing={5}>
-          <Grid item xs={12} sm={4} lg={3}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             {this.teamCard({
               shortName: "Chenai Super Kings",
               name: "CSK",
@@ -152,7 +153,7 @@ class Dashboard extends Component {
               image: process.env.PUBLIC_URL + "/captains/dhoni.png",
             })}
           </Grid>
-          <Grid item xs={12} sm={4} lg={3}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             {this.teamCard({
               shortName: "Delhi Capitals",
               name: "DC",

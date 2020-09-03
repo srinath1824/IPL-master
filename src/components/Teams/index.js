@@ -51,7 +51,7 @@ class Teams extends Component {
           this.props.team.map((m) => {
             if (o === m.role) {
               return (
-                <Grid item xs={12} sm={4} lg={3}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                   <Card
                     onClick={() => this.handleData(m.playerName)}
                     style={{ cursor: "pointer", opacity: "0px" }}
@@ -162,7 +162,6 @@ class Teams extends Component {
         );
       });
     } else {
-      //return <h1>No Data Found</h1>;
       return (
         <Backdrop open={true}>
           <CircularProgress color="primary" />
@@ -171,7 +170,17 @@ class Teams extends Component {
     }
     return (
       <div style={{ textAlign: "center" }}>
-        <h1>{this.props.teamSelected}</h1>
+        <h1
+          style={{
+            background: this.props.jersey,
+            display: "inline-block",
+            color: "white",
+            borderRadius: "50px",
+            padding: "5px",
+          }}
+        >
+          {sessionStorage.getItem("fullTeamName")}
+        </h1>
         <Container maxWidth="lg">
           <Grid container spacing={10}>
             {members}
