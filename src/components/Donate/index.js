@@ -9,7 +9,9 @@ class Donate extends Component {
         <Grid container>
           <Grid item xs={12} md={4} lg={4}>
             <img src="/payment/google_pay.png" width="200px" height="200px" />
-            <h3 style={{ textAlign: "center" }}>Gpay</h3>
+            <a href="https://pay.google.com/" style={{ textAlign: "center" }}>
+              Gpay
+            </a>
           </Grid>
           <Grid item xs={12} md={4} lg={4}>
             <img src="/payment/phonepe.jpg" width="200px" height="200px" />

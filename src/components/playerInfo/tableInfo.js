@@ -8,28 +8,28 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
-const StyledTableCell = withStyles(theme => ({
+const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
+    color: theme.palette.common.white,
   },
   body: {
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 }))(TableCell);
 
-const StyledTableRow = withStyles(theme => ({
+const StyledTableRow = withStyles((theme) => ({
   root: {
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover
-    }
-  }
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
 }))(TableRow);
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 700
-  }
+    minWidth: 700,
+  },
 });
 
 export default function TableInfo(props) {
@@ -42,7 +42,7 @@ export default function TableInfo(props) {
     "SR",
     "4s",
     "6s",
-    "Wicket"
+    "Wicket",
   ];
   let tableColsBowl = [
     "Date",
@@ -52,18 +52,18 @@ export default function TableInfo(props) {
     "Maiden",
     "Eco",
     "Catches",
-    "Stumps"
+    "Stumps",
   ];
 
   let tableData = [];
   let tableColumns =
     props.name === "bat"
-      ? tableColsBat.map(c => <StyledTableCell>{c}</StyledTableCell>)
-      : tableColsBowl.map(c => <StyledTableCell>{c}</StyledTableCell>);
+      ? tableColsBat.map((c) => <StyledTableCell>{c}</StyledTableCell>)
+      : tableColsBowl.map((c) => <StyledTableCell>{c}</StyledTableCell>);
 
   tableData =
     props.data &&
-    props.data.map(d => {
+    props.data.map((d) => {
       return Object.values(d);
     });
 
@@ -75,9 +75,9 @@ export default function TableInfo(props) {
         </TableHead>
         {tableData.length !== 0 ? (
           <TableBody>
-            {tableData.map(x => (
+            {tableData.map((x) => (
               <StyledTableRow>
-                {x.map(d => (
+                {x.map((d) => (
                   <StyledTableCell>{d}</StyledTableCell>
                 ))}
               </StyledTableRow>

@@ -18,6 +18,7 @@ class Teams extends Component {
     super(props);
   }
   async componentDidMount() {
+    window.scrollTo(0, 0);
     if (this.props.playerSelected) {
       this.props.setPlayerSelected("");
     }
@@ -49,7 +50,14 @@ class Teams extends Component {
       teamOrder.map((o) => {
         members.push(
           this.props.team.map((m) => {
+            let totalRuns = 0;
+            let totalWickets = 0;
             if (o === m.role) {
+              m.matches &&
+                m.matches.forEach((val) => {
+                  totalRuns += val.Score;
+                  totalWickets += val.Wickets;
+                });
               return (
                 <Grid item xs={12} sm={6} md={4} lg={3}>
                   <Card
@@ -131,7 +139,7 @@ class Teams extends Component {
                               <div
                                 style={{ fontSize: "30px", fontWeight: "bold" }}
                               >
-                                0
+                                {m?.matches ? m.matches.length : 0}
                               </div>
                             </Grid>
                             <Grid item xs={4}>
@@ -139,15 +147,18 @@ class Teams extends Component {
                               <div
                                 style={{ fontSize: "30px", fontWeight: "bold" }}
                               >
-                                0
+                                {totalRuns}
                               </div>
                             </Grid>
                             <Grid item xs={4}>
                               <div>Wickets</div>
                               <div
-                                style={{ fontSize: "30px", fontWeight: "bold" }}
+                                style={{
+                                  fontSize: "30px",
+                                  fontWeight: "bold",
+                                }}
                               >
-                                0
+                                {totalWickets}
                               </div>
                             </Grid>
                           </Grid>

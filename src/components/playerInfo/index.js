@@ -10,6 +10,7 @@ import "./index.css";
 
 class PlayerInfo extends Component {
   componentWillMount() {
+    window.scrollTo(0, 0);
     if (!this.props.teamSelected && !this.props.playerSelected) {
       this.props.setPlayerSelected(sessionStorage.getItem("playerSelected"));
       this.props.setTeamSelected(sessionStorage.getItem("teamSelected"));
@@ -49,6 +50,8 @@ class PlayerInfo extends Component {
 
     let batStats = [];
     let bowlStats = [];
+    let totalRuns = 0;
+    let totalWickets = 0;
     if (playerInfo && playerInfo.matches) {
       playerInfo.matches.map((match) => {
         let bat = {
@@ -65,7 +68,7 @@ class PlayerInfo extends Component {
           Date: match.Date,
           Overs: match.Overs,
           Runs: match.Runs,
-          Wickets: match.Wicket,
+          Wickets: match.Wickets,
           Maiden: match.Maiden,
           Eco: match.Eco,
           Catches: match.Catches,
@@ -73,6 +76,8 @@ class PlayerInfo extends Component {
         };
         batStats.push(bat);
         bowlStats.push(bowl);
+        totalRuns += match.Score;
+        totalWickets += match.Wickets;
       });
     }
 
@@ -156,15 +161,21 @@ class PlayerInfo extends Component {
               >
                 <Grid item xs={4}>
                   <div>Matches</div>
-                  <div style={{ fontSize: "30px", fontWeight: "bold" }}>0</div>
+                  <div style={{ fontSize: "30px", fontWeight: "bold" }}>
+                    {playerInfo?.matches ? playerInfo.matches.length : 0}
+                  </div>
                 </Grid>
                 <Grid item xs={4}>
                   <div>Runs</div>
-                  <div style={{ fontSize: "30px", fontWeight: "bold" }}>0</div>
+                  <div style={{ fontSize: "30px", fontWeight: "bold" }}>
+                    {totalRuns}
+                  </div>
                 </Grid>
                 <Grid item xs={4}>
                   <div>Wickets</div>
-                  <div style={{ fontSize: "30px", fontWeight: "bold" }}>0</div>
+                  <div style={{ fontSize: "30px", fontWeight: "bold" }}>
+                    {totalWickets}
+                  </div>
                 </Grid>
               </Grid>
             </Grid>

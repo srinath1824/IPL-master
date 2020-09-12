@@ -1,78 +1,220 @@
 import React from "react";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-}))(TableRow);
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+import { Grid, Container } from "@material-ui/core";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import { connect } from "react-redux";
+import MenuItem from "@material-ui/core/MenuItem";
+import actionTypes from "../actions";
+import axios from "axios";
 
 const useStyles = makeStyles({
-  table: {
-    minWidth: 700,
+  root: {
+    width: "100%",
+  },
+  head: {
+    backgroundColor: "black",
+    color: "white",
+  },
+  container: {
+    maxHeight: 440,
   },
 });
 
-export default function CustomizedTables() {
+function StickyHeadTable(props) {
   const classes = useStyles();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [rows, setRows] = React.useState([]);
+  const [selectTeam, setSelectTeam] = React.useState("");
+
+  const columns = [
+    { id: "Player Name", label: "Player Name" },
+    { id: "Role", label: "Role" },
+    { id: "Dream11 Points", label: "Dream11 Points" },
+  ];
+
+  function createData(name, role, points) {
+    return { "Player Name": name, Role: role, "Dream11 Points": points };
+  }
+
+  const DropDown = ({ value, change: handleChange, name, label, disabled }) => (
+    <Select
+      label={label}
+      name={name}
+      value={selectTeam}
+      disabled={disabled}
+      style={{ width: "100%" }}
+      onChange={(e) => handleChange(e)}
+    >
+      {value}
+    </Select>
+  );
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  const changeHandler = async (e) => {
+    setSelectTeam(e.target.value);
+    let pointsTableData = [];
+    if (
+      props.teamsData[e.target.value] &&
+      !props.teamsData[e.target.value].length > 0
+    ) {
+      //api call
+      await axios
+        .get(`http://192.168.0.6:5000/api/getdata/${e.target.value}`)
+        .then((res) => {
+          props.setTeamData({
+            name: e.target.value,
+            role: e.target.value,
+            players: res.data,
+          });
+          pointsTableData =
+            res.data &&
+            res.data.map((d) => {
+              return createData(
+                d.playerName,
+                d.role,
+                d["Dream11"] ? d["Dream11"] : 0
+              );
+            });
+          pointsTableData.sort(
+            (x, y) => y["Dream11 Points"] - x["Dream11 Points"]
+          );
+          setRows(pointsTableData);
+        })
+        .catch((err) => console.log("error"));
+    } else {
+      pointsTableData =
+        props.teamsData[e.target.value] &&
+        props.teamsData[e.target.value].map((d) => {
+          return createData(
+            d.playerName,
+            d.role,
+            d["Dream11"] ? d["Dream11"] : 0
+          );
+        });
+      pointsTableData.sort((x, y) => y["Dream11 Points"] - x["Dream11 Points"]);
+      setRows(pointsTableData);
+    }
+  };
+
+  let teams = Object.keys(props.teamsData).map((team) => {
+    return <MenuItem value={team}>{team}</MenuItem>;
+  });
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
-            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Container maxWidth="md">
+      <div
+        style={{ textAlign: "center", fontSize: "2rem", fontWeight: "bold" }}
+      >
+        Dream11 Points table
+      </div>
+      <Grid container style={{ justifyContent: "center" }}>
+        <Grid item xs={12} sm={4} lg={3} />
+        <Grid
+          item
+          xs={12}
+          sm={4}
+          lg={3}
+          style={{ textAlign: "center", marginTop: "20px" }}
+        >
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel>Select Team</InputLabel>
+            <DropDown
+              name="team"
+              label="Select Team1"
+              value={teams}
+              change={(e) => changeHandler(e)}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={4} lg={3} />
+      </Grid>
+      <br />
+      {rows.length > 0 && (
+        <Paper className={classes.root}>
+          <TableContainer className={classes.container}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      className={classes.head}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => {
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={row.code}
+                      >
+                        {columns.map((column) => {
+                          const value = row[column.id];
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {value}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </Paper>
+      )}
+    </Container>
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    teamsData: state.teams,
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    setTeamUpdate: (data) => dispatch({ type: actionTypes.TEAM_SELECT, data }),
+    setTeamData: (data) => dispatch({ type: actionTypes.TEAMS_SELECT, data }),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StickyHeadTable);

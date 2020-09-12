@@ -23,8 +23,16 @@ function App() {
             <Route exact path="/playerInfo" render={() => <PlayerInfo />} />
             <Route exact path="/Compare" render={() => <Compare />} />
             <Route exact path="/Donate" render={() => <Donate />} />
-            <Route exact path="/Points" render={() => <Stats />} />
-            <Route exact path="/Dream11" render={() => <Stats />} />
+            <Route
+              exact
+              path="/Points"
+              render={() => <Stats name="points_table" />}
+            />
+            <Route
+              exact
+              path="/Dream11"
+              render={() => <Stats name="dream11_points" />}
+            />
           </div>
         </Switch>
       </Router>

@@ -9,7 +9,7 @@ import actionTypes from "../actions";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import CompareCard from "./compareCard";
-import Popup from "../Popup";
+import CompareStats from "./compareStats";
 
 const DropDown = ({ value, change: handleChange, name, label, disabled }) => (
   <Select
@@ -52,7 +52,7 @@ class Compare extends Component {
     ) {
       //api call
       axios
-        .get(`http://localhost:5000/api/getdata/${e.target.value}`)
+        .get(`http://192.168.0.6:5000/api/getdata/${e.target.value}`)
         .then((res) => {
           this.props.setTeamData({
             name: e.target.value,
@@ -206,7 +206,9 @@ class Compare extends Component {
           )}
         </div>
         {this.state.showPopup && (
-          <Popup
+          <CompareStats
+            player1={this.props.player1Selected}
+            player2={this.props.player2Selected}
             show={this.state.showPopup}
             close={() => this.setState({ showPopup: false })}
           />

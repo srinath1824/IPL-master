@@ -10,7 +10,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
 
 export default class Popup extends Component {
   tableData(data) {
@@ -24,7 +23,7 @@ export default class Popup extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.keys(data).map(p => (
+            {Object.keys(data).map((p) => (
               <TableRow key={p.name}>
                 <TableCell component="th" scope="row">
                   {p.name}
@@ -38,7 +37,6 @@ export default class Popup extends Component {
     );
   }
   render() {
-    //const data = this.props.player;
     return (
       <Dialog
         aria-labelledby="customized-dialog-title"
@@ -61,24 +59,6 @@ export default class Popup extends Component {
             Agree
           </Button>
         </DialogActions>
-        {/* <Grid container>
-          <Grid item xs={6}>
-            {this.tableData(data)}
-          </Grid>
-
-          <Grid item xs={6}>
-            <Divider orientation="vertical" flexItem />
-            <Grid container>
-              <Grid item xs={12}>
-                {this.tableData(data)}
-              </Grid>
-
-              <Grid item xs={12}>
-                {this.tableData(data)}
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid> */}
       </Dialog>
     );
   }

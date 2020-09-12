@@ -15,11 +15,12 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      donationPopup: true,
+      donationPopup: false,
     };
   }
 
   componentWillMount() {
+    window.scrollTo(0, 0);
     let popup = sessionStorage.getItem("donatePopup");
     if (popup !== "false") {
       sessionStorage.setItem("donatePopup", true);
@@ -31,6 +32,9 @@ class Dashboard extends Component {
       this.props.setTeamSelected("");
       //this.props.setPlayerSelected("");
     }
+    setTimeout(() => {
+      this.setState({ donationPopup: true });
+    }, 5000);
   }
 
   handleDisagree() {
@@ -144,7 +148,7 @@ class Dashboard extends Component {
     return (
       <div style={{}}>
         <Grid container spacing={5}>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Grid item xs={12} sm={6} md={3} lg={3}>
             {this.teamCard({
               shortName: "Chenai Super Kings",
               name: "CSK",
@@ -153,7 +157,7 @@ class Dashboard extends Component {
               image: process.env.PUBLIC_URL + "/captains/dhoni.png",
             })}
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Grid item xs={12} sm={6} md={3} lg={3}>
             {this.teamCard({
               shortName: "Delhi Capitals",
               name: "DC",
@@ -162,7 +166,7 @@ class Dashboard extends Component {
               image: process.env.PUBLIC_URL + "/captains/sreyas_iyer.png",
             })}
           </Grid>
-          <Grid item xs={12} sm={4} lg={3}>
+          <Grid item xs={12} sm={6} md={3} lg={3}>
             {this.teamCard({
               shortName: "Kings X1 Punjab",
               name: "KXIP",
@@ -171,7 +175,7 @@ class Dashboard extends Component {
               image: process.env.PUBLIC_URL + "/captains/kl_rahul.png",
             })}
           </Grid>
-          <Grid item xs={12} sm={4} lg={3}>
+          <Grid item xs={12} sm={6} md={3} lg={3}>
             {this.teamCard({
               shortName: "Kolkata Knight Riders",
               name: "KKR",
@@ -181,7 +185,7 @@ class Dashboard extends Component {
             })}
           </Grid>
 
-          <Grid item xs={12} sm={4} lg={3}>
+          <Grid item xs={12} sm={6} md={3} lg={3}>
             {this.teamCard({
               shortName: "Mumbai Indians",
               name: "MI",
@@ -190,7 +194,7 @@ class Dashboard extends Component {
               image: process.env.PUBLIC_URL + "/captains/rohit.png",
             })}
           </Grid>
-          <Grid item xs={12} sm={4} lg={3}>
+          <Grid item xs={12} sm={6} md={3} lg={3}>
             {this.teamCard({
               shortName: "Rajasthan Royals",
               name: "RR",
@@ -199,7 +203,7 @@ class Dashboard extends Component {
               image: process.env.PUBLIC_URL + "/captains/smith.png",
             })}
           </Grid>
-          <Grid item xs={12} sm={4} lg={3}>
+          <Grid item xs={12} sm={6} md={3} lg={3}>
             {this.teamCard({
               shortName: "Royal Challengers Bangalore",
               name: "RCB",
@@ -208,7 +212,7 @@ class Dashboard extends Component {
               image: process.env.PUBLIC_URL + "/captains/kohli.png",
             })}
           </Grid>
-          <Grid item xs={12} sm={4} lg={3}>
+          <Grid item xs={12} sm={6} md={3} lg={3}>
             {this.teamCard({
               shortName: "Sunrisers Hyderabad",
               name: "SRH",

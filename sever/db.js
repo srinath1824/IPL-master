@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header(
     "Access-Control-Allow-Headers",
@@ -26,12 +26,12 @@ app.use(function(req, res, next) {
 mongoose
   .connect(url, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
   .then(() => {
     console.log("connected to mongoDB...");
   })
-  .catch(err => {
+  .catch((err) => {
     console.log("could not connect to mongoDB...", err);
   });
 
@@ -42,7 +42,8 @@ const courseSchema = new mongoose.Schema({
   matches: [Object],
   details: String,
   Captain: String,
-  overseas: String
+  overseas: String,
+  Dream11: String,
 });
 
 global.__basedir = __dirname;
@@ -54,7 +55,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     cb(null, file.fieldname + "-" + Date.now() + "-" + file.originalname);
-  }
+  },
 });
 
 const upload = multer({ storage: storage });
@@ -65,11 +66,11 @@ function validate(excelData) {
   const profileSchema = Joi.object({
     playerName: Joi.string().required(),
     role: Joi.string().required(),
-    price: Joi.string().required()
+    price: Joi.string().required(),
   });
 
   for (let team in excelData) {
-    excelData[team].slice(1).map(data => {
+    excelData[team].slice(1).map((data) => {
       const { error, value } = profileSchema.validate(data);
       if (!error) {
         // console.log("Success")
@@ -85,7 +86,6 @@ function validate(excelData) {
 // -> Import Excel File to MongoDB database
 function importExcelData2MongoDB(filePath, fileName) {
   // -> Read Excel File to Json Data
-  console.log("filename", fileName);
   const excelData = excelToJson({
     sourceFile: filePath,
     sheets: [
@@ -96,8 +96,9 @@ function importExcelData2MongoDB(filePath, fileName) {
           B: "role",
           C: "price",
           D: "overseas",
-          E: "Captain"
-        }
+          E: "Captain",
+          F: "Dream11",
+        },
       },
       {
         name: "MI",
@@ -106,8 +107,9 @@ function importExcelData2MongoDB(filePath, fileName) {
           B: "role",
           C: "price",
           D: "overseas",
-          E: "Captain"
-        }
+          E: "Captain",
+          F: "Dream11",
+        },
       },
       {
         name: "CSK",
@@ -116,8 +118,9 @@ function importExcelData2MongoDB(filePath, fileName) {
           B: "role",
           C: "price",
           D: "overseas",
-          E: "Captain"
-        }
+          E: "Captain",
+          F: "Dream11",
+        },
       },
       {
         name: "DC",
@@ -126,8 +129,9 @@ function importExcelData2MongoDB(filePath, fileName) {
           B: "role",
           C: "price",
           D: "overseas",
-          E: "Captain"
-        }
+          E: "Captain",
+          F: "Dream11",
+        },
       },
       {
         name: "KXIP",
@@ -136,8 +140,9 @@ function importExcelData2MongoDB(filePath, fileName) {
           B: "role",
           C: "price",
           D: "overseas",
-          E: "Captain"
-        }
+          E: "Captain",
+          F: "Dream11",
+        },
       },
       {
         name: "KKR",
@@ -146,8 +151,9 @@ function importExcelData2MongoDB(filePath, fileName) {
           B: "role",
           C: "price",
           D: "overseas",
-          E: "Captain"
-        }
+          E: "Captain",
+          F: "Dream11",
+        },
       },
       {
         name: "RR",
@@ -156,8 +162,9 @@ function importExcelData2MongoDB(filePath, fileName) {
           B: "role",
           C: "price",
           D: "overseas",
-          E: "Captain"
-        }
+          E: "Captain",
+          F: "Dream11",
+        },
       },
       {
         name: "SRH",
@@ -166,10 +173,11 @@ function importExcelData2MongoDB(filePath, fileName) {
           B: "role",
           C: "price",
           D: "overseas",
-          E: "Captain"
-        }
-      }
-    ]
+          E: "Captain",
+          F: "Dream11",
+        },
+      },
+    ],
   });
 
   // console.log('EXCEL DATA', excelData)
@@ -182,7 +190,7 @@ function importExcelData2MongoDB(filePath, fileName) {
       const Course = mongoose.model(data, courseSchema);
       Course.insertMany(documents, (err, res) => {
         if (err) {
-          console.log("ERRORRRRRRRR", data);
+          console.log("ERROR", data);
           throw err;
         }
         console.log("Number of documents inserted: ", data, res.length);
@@ -197,7 +205,6 @@ function importExcelData2MongoDB(filePath, fileName) {
 }
 function importTeamData2MongoDB(filePath, fileName, team1, team2) {
   // -> Read Excel File to Json Data
-  console.log("filename", fileName);
   const excelData = excelToJson({
     sourceFile: filePath,
     sheets: [
@@ -218,10 +225,11 @@ function importTeamData2MongoDB(filePath, fileName, team1, team2) {
           L: "Eco",
           M: "Catches",
           N: "Stumps",
-          O: "Venue",
+          O: "Dream11",
           P: "Date",
-          Q: "Result"
-        }
+          Q: "Venue",
+          R: "Result",
+        },
       },
       {
         name: team2,
@@ -240,19 +248,18 @@ function importTeamData2MongoDB(filePath, fileName, team1, team2) {
           L: "Eco",
           M: "Catches",
           N: "Stumps",
-          O: "Venue",
+          O: "Dream11",
           P: "Date",
-          Q: "Result"
-        }
-      }
-    ]
+          Q: "Venue",
+          R: "Result",
+        },
+      },
+    ],
   });
-
-  console.log("EXCEL DATA", excelData);
-
   // Insert Json-Object to MongoDB
   // let result = validate(excelData);
   // if (result) {
+  //console.log("EXCEL DATA", excelData);
   for (let data in excelData) {
     let team = "";
     if (team1 === data) {
@@ -261,15 +268,15 @@ function importTeamData2MongoDB(filePath, fileName, team1, team2) {
       team = team1;
     }
     let details = excelData[data].slice(1, 2);
-    console.log("DETAILS", details);
     let documents = excelData[data].slice(2);
     const Course = mongoose.model(data, courseSchema);
     documents.map(async (a, index) => {
-      await Course.find({ playerName: a.PlayerName }, async function(
+      await Course.find({ playerName: a.PlayerName }, async function (
         err,
         docs
       ) {
         if (docs) {
+          let totalPoints = 0;
           let updated = [
             ...docs[0].matches,
             {
@@ -288,23 +295,32 @@ function importTeamData2MongoDB(filePath, fileName, team1, team2) {
               Eco: a.Eco,
               Catches: a.Catches,
               Stumps: a.Stumps,
+              Dream11: a["Dream11"],
               Date: details[0].Date,
               Venue: details[0].Venue,
-              Result: details[0].Result
-            }
+              Result: details[0].Result,
+            },
           ];
+          totalPoints += parseInt(a["Dream11"]);
+          docs.map((d) => {
+            d.matches.map((data) => {
+              totalPoints += parseInt(data["Dream11"]);
+            });
+          });
           await Course.findOneAndUpdate(
             { playerName: a.PlayerName },
             {
               $set: {
-                matches: updated
-              }
+                matches: updated,
+                Dream11: totalPoints,
+              },
             },
             (err, res) => {
               if (err) {
                 console.log("storing issue");
               } else {
-                console.log("matches", res);
+                //fs.unlinkSync(filePath);
+                //console.log("matchesss", res);
               }
             }
           );
@@ -332,15 +348,12 @@ app.post("/api/teamdata", upload.single("teamdatafile"), async (req, res) => {
   try {
     await importTeamData2MongoDB(
       __basedir + "/uploads/" + req.file.filename,
-      req.file.originalname
-        .split(".")[0]
-        .replace(/ /g, "")
-        .trim(" "),
+      req.file.originalname.split(".")[0].replace(/ /g, "").trim(" "),
       req.query.team1,
       req.query.team2
     );
     res.json({
-      msg: "File uploaded/import successfully!"
+      msg: "File uploaded/import successfully!",
       //file: req.file,
     });
   } catch {
@@ -353,13 +366,10 @@ app.post("/api/uploadfile", upload.single("uploadfile"), async (req, res) => {
   try {
     await importExcelData2MongoDB(
       __basedir + "/uploads/" + req.file.filename,
-      req.file.originalname
-        .split(".")[0]
-        .replace(/ /g, "")
-        .trim(" ")
+      req.file.originalname.split(".")[0].replace(/ /g, "").trim(" ")
     );
     res.json({
-      msg: "File uploaded/import successfully!"
+      msg: "File uploaded/import successfully!",
       //file: req.file,
     });
   } catch {
@@ -370,7 +380,7 @@ app.post("/api/uploadfile", upload.single("uploadfile"), async (req, res) => {
 app.get("/api/getdata/:team", (req, res) => {
   console.log("TEAM", req.params.team);
   const Course = mongoose.model(req.params.team, courseSchema);
-  Course.find({}, function(err, data) {
+  Course.find({}, function (err, data) {
     if (err) {
       res.send("Error uploading data", err);
     } else {
@@ -384,7 +394,7 @@ app.post("/api/savedata", (req, res) => {
   let course = new Course(
     _.pick(req.body, ["playerName", "score", "role", "highScore", "franchise"])
   );
-  course.save(function(err, data) {
+  course.save(function (err, data) {
     if (err) {
       res.send(err);
     } else {
@@ -395,7 +405,7 @@ app.post("/api/savedata", (req, res) => {
 
 app.post("/api/userData", (req, res) => {
   const Course = mongoose.model(req.body.team, courseSchema);
-  Course.find({ playerName: req.body.name }, function(err, data) {
+  Course.find({ playerName: req.body.name }, function (err, data) {
     if (err) {
       res.send("Error uploading data", err);
     } else {
