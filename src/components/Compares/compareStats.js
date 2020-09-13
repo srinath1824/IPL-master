@@ -1,9 +1,4 @@
-import React from "react";
-import { Dialog, DialogTitle, Grid } from "@material-ui/core";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import Button from "@material-ui/core/Button";
+import * as React from "react";
 import Paper from "@material-ui/core/Paper";
 import {
   Chart,
@@ -12,53 +7,119 @@ import {
   BarSeries,
   Title,
   Legend,
+  Tooltip,
 } from "@devexpress/dx-react-chart-material-ui";
 import { withStyles } from "@material-ui/core/styles";
 import { Stack, Animation } from "@devexpress/dx-react-chart";
+import { Dialog, DialogTitle, Grid } from "@material-ui/core";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Button from "@material-ui/core/Button";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
+import { EventTracker } from "@devexpress/dx-react-chart";
 
-const data = [
-  { year: "Matches", population: 2.525 },
-  { year: "1960", population: 3.018 },
-  { year: "1970", population: 3.682 },
-  { year: "1980", population: 4.44 },
-  { year: "1990", population: 5.31 },
-  { year: "2000", population: 6.127 },
-  { year: "2010", population: 6.93 },
-];
+const legendStyles = () => ({
+  root: {
+    display: "flex",
+    margin: "auto",
+    flexDirection: "row",
+  },
+});
+const legendRootBase = ({ classes, ...restProps }) => (
+  <Legend.Root {...restProps} className={classes.root} />
+);
+const Root = withStyles(legendStyles, { name: "LegendRoot" })(legendRootBase);
+const legendLabelStyles = () => ({
+  label: {
+    whiteSpace: "nowrap",
+  },
+});
+const legendLabelBase = ({ classes, ...restProps }) => (
+  <Legend.Label className={classes.label} {...restProps} />
+);
+const Label = withStyles(legendLabelStyles, { name: "LegendLabel" })(
+  legendLabelBase
+);
 
-function CompareStats(props) {
-  //   const [data, setData] = React.useState();
-  //   setData(data);
-  return (
-    <div>
+class CompareStats extends React.PureComponent {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const { data: chartData } = this.props;
+
+    return (
       <Dialog
         aria-labelledby="customized-dialog-title"
-        open={props.show}
-        onClose={props.close}
+        fullScreen
+        open={this.props.show}
+        onClose={this.props.close}
       >
-        {/* <DialogTitle id="customized-dialog-title"></DialogTitle> */}
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <Paper>
-              <Chart data={data}>
+              <Chart data={chartData}>
                 <ArgumentAxis />
-                <ValueAxis max={7} />
-
-                <BarSeries valueField="population" argumentField="year" />
-                <Title text={`${props.player1} VS ${props.player2}`} />
+                {/* <ValueAxis /> */}
+                <Legend
+                  position="bottom"
+                  rootComponent={Root}
+                  labelComponent={Label}
+                />
+                <BarSeries
+                  name={this.props.player1}
+                  valueField="player1"
+                  argumentField="field"
+                  color={this.props.jerseyColors[this.props.team1]}
+                />
+                <BarSeries
+                  name={this.props.player2}
+                  valueField="player2"
+                  argumentField="field"
+                  color={this.props.jerseyColors[this.props.team2]}
+                />
                 <Animation />
+                <Title
+                  text={`${this.props.player1} vs ${this.props.player2}`}
+                />
+                <Stack />
+                <EventTracker />
+                <Tooltip />
               </Chart>
             </Paper>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.close} color="primary" autoFocus>
+          <Button
+            onClick={this.props.close}
+            autoFocus
+            variant="contained"
+            color="secondary"
+          >
             close
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
-  );
+    );
+  }
 }
 
-export default CompareStats;
+function mapStateToProps(state) {
+  return {
+    jerseyColors: state.compare.colors,
+    team1: state.compare.team1,
+    team2: state.compare.team2,
+    player1: state.compare.player1,
+    player2: state.compare.player2,
+    teamData: state.teams,
+  };
+}
+
+export default compose(
+  connect(mapStateToProps, null),
+  withRouter
+)(CompareStats);

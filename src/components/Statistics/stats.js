@@ -78,7 +78,7 @@ function StickyHeadTable(props) {
     ) {
       //api call
       await axios
-        .get(`http://192.168.0.6:5000/api/getdata/${e.target.value}`)
+        .get(`http://192.168.0.5:5000/api/getdata/${e.target.value}`)
         .then((res) => {
           props.setTeamData({
             name: e.target.value,

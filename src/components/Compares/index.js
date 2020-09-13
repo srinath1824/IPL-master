@@ -31,6 +31,7 @@ class Compare extends Component {
       player1Stage: false,
       player2Stage: false,
       showPopup: false,
+      compareData: [],
     };
   }
 
@@ -52,7 +53,7 @@ class Compare extends Component {
     ) {
       //api call
       axios
-        .get(`http://192.168.0.6:5000/api/getdata/${e.target.value}`)
+        .get(`http://192.168.0.5:5000/api/getdata/${e.target.value}`)
         .then((res) => {
           this.props.setTeamData({
             name: e.target.value,
@@ -62,6 +63,79 @@ class Compare extends Component {
         })
         .catch((err) => console.log("error"));
     }
+  }
+
+  handleCompare() {
+    const {
+      teamsData,
+      team1Selected,
+      team2Selected,
+      player1Selected,
+      player2Selected,
+    } = this.props;
+    let player1Data = teamsData[team1Selected].find(
+      (p) => p.playerName === player1Selected
+    );
+    let player2Data = teamsData[team2Selected].find(
+      (p) => p.playerName === player2Selected
+    );
+    let data = [
+      {
+        field: "Matches",
+        player1: player1Data.matches.length,
+        player2: player2Data.matches.length,
+      },
+      {
+        field: "Runs",
+        player1: player1Data.matches.reduce((x, y) => x + y["Score"], 0),
+        player2: player2Data.matches.reduce((x, y) => x + y["Score"], 0),
+      },
+      {
+        field: "S/R",
+        player1:
+          player1Data.matches.reduce((x, y) => x + y["SR"], 0) /
+          player1Data.matches.length,
+        player2:
+          player2Data.matches.reduce((x, y) => x + y["SR"], 0) /
+          player2Data.matches.length,
+      },
+      {
+        field: "4's",
+        player1: player1Data.matches.reduce((x, y) => x + y["4s"], 0),
+        player2: player2Data.matches.reduce((x, y) => x + y["4s"], 0),
+      },
+      {
+        field: "6's",
+        player1: player1Data.matches.reduce((x, y) => x + y["6s"], 0),
+        player2: player2Data.matches.reduce((x, y) => x + y["6s"], 0),
+      },
+      {
+        field: "Catches",
+        player1: player1Data.matches.reduce((x, y) => x + y["Catches"], 0),
+        player2: player2Data.matches.reduce((x, y) => x + y["Catches"], 0),
+      },
+      {
+        field: "Overs",
+        player1: player1Data.matches.reduce((x, y) => x + y["Overs"], 0),
+        player2: player2Data.matches.reduce((x, y) => x + y["Overs"], 0),
+      },
+      {
+        field: "Wickets",
+        player1: player1Data.matches.reduce((x, y) => x + y["Wickets"], 0),
+        player2: player2Data.matches.reduce((x, y) => x + y["Wickets"], 0),
+      },
+      {
+        field: "Eco",
+        player1:
+          player1Data.matches.reduce((x, y) => x + y["Eco"], 0) /
+          player1Data.matches.length,
+        player2:
+          player2Data.matches.reduce((x, y) => x + y["Eco"], 0) /
+          player2Data.matches.length,
+      },
+    ];
+    this.setState({ compareData: data });
+    this.setState({ showPopup: true });
   }
   render() {
     let team1 = Object.keys(this.props.teamsData).map((team) => {
@@ -169,25 +243,25 @@ class Compare extends Component {
         <div>
           <Grid container>
             <Grid item xs={2} />
-            {this.state.player1Stage && (
-              <Grid item xs={12} sm={4} lg={3}>
+            <Grid item xs={12} sm={4} lg={3}>
+              {this.state.player1Stage && (
                 <CompareCard
                   name={this.props.player1Selected}
                   team={this.props.team1Selected}
                   teamsData={this.props.teamsData}
                 />
-              </Grid>
-            )}
+              )}
+            </Grid>
             <Grid item xs={2} />
-            {this.state.player2Stage && (
-              <Grid item xs={12} sm={4} lg={3}>
+            <Grid item xs={12} sm={4} lg={3}>
+              {this.state.player2Stage && (
                 <CompareCard
                   name={this.props.player2Selected}
                   team={this.props.team2Selected}
                   teamsData={this.props.teamsData}
                 />
-              </Grid>
-            )}
+              )}
+            </Grid>
             <Grid item xs={2} />
           </Grid>
         </div>
@@ -199,17 +273,18 @@ class Compare extends Component {
               disabled={
                 !(this.props.player1Selected && this.props.player2Selected)
               }
-              onClick={() => this.setState({ showPopup: true })}
+              onClick={() => this.handleCompare()}
             >
               Compare
             </Button>
           )}
         </div>
-        {this.state.showPopup && (
+        {this.state.showPopup && this.state.compareData && (
           <CompareStats
             player1={this.props.player1Selected}
             player2={this.props.player2Selected}
             show={this.state.showPopup}
+            data={this.state.compareData}
             close={() => this.setState({ showPopup: false })}
           />
         )}
@@ -225,6 +300,7 @@ function mapStateToProps(state) {
     player1Selected: state.compare.player1,
     player2Selected: state.compare.player2,
     teamsData: state.teams,
+    jerseyColors: state.compare.colors,
   };
 }
 function mapDispatchToProps(dispatch) {
