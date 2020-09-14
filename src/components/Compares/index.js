@@ -110,11 +110,6 @@ class Compare extends Component {
         player2: player2Data.matches.reduce((x, y) => x + y["6s"], 0),
       },
       {
-        field: "Catches",
-        player1: player1Data.matches.reduce((x, y) => x + y["Catches"], 0),
-        player2: player2Data.matches.reduce((x, y) => x + y["Catches"], 0),
-      },
-      {
         field: "Overs",
         player1: player1Data.matches.reduce((x, y) => x + y["Overs"], 0),
         player2: player2Data.matches.reduce((x, y) => x + y["Overs"], 0),
@@ -132,6 +127,11 @@ class Compare extends Component {
         player2:
           player2Data.matches.reduce((x, y) => x + y["Eco"], 0) /
           player2Data.matches.length,
+      },
+      {
+        field: "Catches",
+        player1: player1Data.matches.reduce((x, y) => x + y["Catches"], 0),
+        player2: player2Data.matches.reduce((x, y) => x + y["Catches"], 0),
       },
     ];
     this.setState({ compareData: data });

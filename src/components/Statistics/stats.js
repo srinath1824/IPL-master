@@ -30,7 +30,7 @@ const useStyles = makeStyles({
   },
 });
 
-function StickyHeadTable(props) {
+function Stats(props) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
@@ -40,7 +40,7 @@ function StickyHeadTable(props) {
   const columns = [
     { id: "Player Name", label: "Player Name" },
     { id: "Role", label: "Role" },
-    { id: "Dream11 Points", label: "Dream11 Points" },
+    { id: "Dream11 Points", label: "Dream11 Points Average" },
   ];
 
   function createData(name, role, points) {
@@ -91,7 +91,7 @@ function StickyHeadTable(props) {
               return createData(
                 d.playerName,
                 d.role,
-                d["Dream11"] ? d["Dream11"] : 0
+                d["Dream11"] ? d["Dream11"] / d.matches.length : 0
               );
             });
           pointsTableData.sort(
@@ -115,9 +115,11 @@ function StickyHeadTable(props) {
     }
   };
 
-  let teams = Object.keys(props.teamsData).map((team) => {
-    return <MenuItem value={team}>{team}</MenuItem>;
-  });
+  let teams =
+    props.teamsData &&
+    Object.keys(props.teamsData).map((team) => {
+      return <MenuItem value={team}>{team}</MenuItem>;
+    });
 
   return (
     <Container maxWidth="md">
@@ -148,7 +150,7 @@ function StickyHeadTable(props) {
         <Grid item xs={12} sm={4} lg={3} />
       </Grid>
       <br />
-      {rows.length > 0 && (
+      {rows && rows.length > 0 && (
         <Paper className={classes.root}>
           <TableContainer className={classes.container}>
             <Table stickyHeader aria-label="sticky table">
@@ -217,4 +219,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StickyHeadTable);
+export default connect(mapStateToProps, mapDispatchToProps)(Stats);

@@ -46,6 +46,10 @@ const courseSchema = new mongoose.Schema({
   Dream11: String,
 });
 
+const pointsSchema = new mongoose.Schema({
+  "Points Table": [Object],
+});
+
 global.__basedir = __dirname;
 
 // -> Multer Upload Storage
@@ -203,6 +207,38 @@ function importExcelData2MongoDB(filePath, fileName) {
     fs.unlinkSync(filePath);
   }
 }
+
+function importPointsTableData2MongoDB(filePath, fileName) {
+  const excelData = excelToJson({
+    sourceFile: filePath,
+    sheets: [
+      {
+        name: "Points Table",
+        columnToKey: {
+          A: "Team",
+          B: "Played",
+          C: "Won",
+          D: "Lost",
+          E: "Points",
+        },
+      },
+    ],
+  });
+  const Course = mongoose.model("Points Table", pointsSchema);
+  let pointsTable = {
+    "Points Table": excelData["Points Table"].slice(1),
+  };
+  let course = new Course(pointsTable);
+  course.save(function (err, data) {
+    if (err) {
+      console.log("ERROR", data);
+      throw err;
+    } else {
+      console.log("Number of documents inserted: ", data);
+    }
+  });
+}
+
 function importTeamData2MongoDB(filePath, fileName, team1, team2) {
   // -> Read Excel File to Json Data
   const excelData = excelToJson({
@@ -361,6 +397,36 @@ app.post("/api/teamdata", upload.single("teamdatafile"), async (req, res) => {
   }
 });
 
+app.get("/api/getPointsTable", (req, res) => {
+  const Course = mongoose.model("Points Table", pointsSchema);
+  Course.find({}, function (err, data) {
+    if (err) {
+      res.send("Error uploading data", err);
+    } else {
+      res.send(data);
+    }
+  });
+});
+
+app.post(
+  "/api/pointsTableData",
+  upload.single("pointsTableFile"),
+  async (req, res) => {
+    try {
+      await importPointsTableData2MongoDB(
+        __basedir + "/uploads/" + req.file.filename,
+        req.file.originalname.split(".")[0].replace(/ /g, "").trim(" ")
+      );
+      res.json({
+        msg: "Points Table File uploaded/import successfully!",
+        //file: req.file,
+      });
+    } catch {
+      res.status(400).send("Error occured while uploading to MongoDB");
+    }
+  }
+);
+
 // -> Express Upload RestAPIs
 app.post("/api/uploadfile", upload.single("uploadfile"), async (req, res) => {
   try {
@@ -378,7 +444,6 @@ app.post("/api/uploadfile", upload.single("uploadfile"), async (req, res) => {
 });
 
 app.get("/api/getdata/:team", (req, res) => {
-  console.log("TEAM", req.params.team);
   const Course = mongoose.model(req.params.team, courseSchema);
   Course.find({}, function (err, data) {
     if (err) {

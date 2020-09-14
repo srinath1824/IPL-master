@@ -8,6 +8,7 @@ import Form from "./components/forms/form";
 import PlayerInfo from "./components/playerInfo";
 import Compare from "./components/Compares";
 import Stats from "./components/Statistics/stats";
+import PointsTable from "./components/Statistics/pointsTable";
 import Donate from "./components/Donate";
 
 function App() {
@@ -17,22 +18,14 @@ function App() {
         <Header />
         <Switch>
           <div style={{ padding: "30px" }}>
-            <Route exact path="/" render={() => <Dashboard />} />
-            <Route exact path="/teams" render={() => <Teams />} />
-            <Route exact path="/form" render={() => <Form />} />
-            <Route exact path="/playerInfo" render={() => <PlayerInfo />} />
-            <Route exact path="/Compare" render={() => <Compare />} />
-            <Route exact path="/Donate" render={() => <Donate />} />
-            <Route
-              exact
-              path="/Points"
-              render={() => <Stats name="points_table" />}
-            />
-            <Route
-              exact
-              path="/Dream11"
-              render={() => <Stats name="dream11_points" />}
-            />
+            <Route exact path="/" component={Dashboard} />
+            <Route exact path="/teams" component={Teams} />
+            <Route exact path="/form" component={Form} />
+            <Route exact path="/playerInfo" component={PlayerInfo} />
+            <Route exact path="/Compare" component={Compare} />
+            <Route exact path="/Donate" component={Donate} />
+            <Route exact path="/Points" component={PointsTable} />
+            <Route exact path="/Dream11" component={Stats} />
           </div>
         </Switch>
       </Router>

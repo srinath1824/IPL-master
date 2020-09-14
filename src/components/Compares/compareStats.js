@@ -44,14 +44,52 @@ const Label = withStyles(legendLabelStyles, { name: "LegendLabel" })(
   legendLabelBase
 );
 
+const Stats = (props) => {
+  return (
+    <Paper>
+      <Chart data={props.chartData}>
+        <ArgumentAxis />
+        <ValueAxis />
+        <Legend position="bottom" rootComponent={Root} labelComponent={Label} />
+        <BarSeries
+          name={props.player1}
+          valueField="player1"
+          argumentField="field"
+          color={props.jerseyColors[props.team1]}
+        />
+        <BarSeries
+          name={props.player2}
+          valueField="player2"
+          argumentField="field"
+          color={props.jerseyColors[props.team2]}
+        />
+        <Animation />
+        <Title text={`${props.player1} vs ${props.player2}`} />
+        <EventTracker />
+        <Tooltip />
+        <Stack />
+      </Chart>
+    </Paper>
+  );
+};
+
 class CompareStats extends React.PureComponent {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const { data: chartData } = this.props;
+    const {
+      data: chartData,
+      player1,
+      player2,
+      jerseyColors,
+      team1,
+      team2,
+    } = this.props;
 
+    let batStats = chartData.slice(0, 5);
+    let bowlStats = chartData.slice(5);
     return (
       <Dialog
         aria-labelledby="customized-dialog-title"
@@ -60,38 +98,22 @@ class CompareStats extends React.PureComponent {
         onClose={this.props.close}
       >
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <Paper>
-              <Chart data={chartData}>
-                <ArgumentAxis />
-                {/* <ValueAxis /> */}
-                <Legend
-                  position="bottom"
-                  rootComponent={Root}
-                  labelComponent={Label}
-                />
-                <BarSeries
-                  name={this.props.player1}
-                  valueField="player1"
-                  argumentField="field"
-                  color={this.props.jerseyColors[this.props.team1]}
-                />
-                <BarSeries
-                  name={this.props.player2}
-                  valueField="player2"
-                  argumentField="field"
-                  color={this.props.jerseyColors[this.props.team2]}
-                />
-                <Animation />
-                <Title
-                  text={`${this.props.player1} vs ${this.props.player2}`}
-                />
-                <Stack />
-                <EventTracker />
-                <Tooltip />
-              </Chart>
-            </Paper>
-          </DialogContentText>
+          <Stats
+            chartData={batStats}
+            player1={player1}
+            player2={player2}
+            team1={team1}
+            team2={team2}
+            jerseyColors={jerseyColors}
+          />
+          <Stats
+            chartData={bowlStats}
+            player1={player1}
+            player2={player2}
+            team1={team1}
+            team2={team2}
+            jerseyColors={jerseyColors}
+          />
         </DialogContent>
         <DialogActions>
           <Button

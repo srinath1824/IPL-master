@@ -32,9 +32,10 @@ class Dashboard extends Component {
       this.props.setTeamSelected("");
       //this.props.setPlayerSelected("");
     }
-    setTimeout(() => {
-      this.setState({ donationPopup: true });
-    }, 5000);
+    //Donate popup
+    // setTimeout(() => {
+    //   this.setState({ donationPopup: true });
+    // }, 5000);
   }
 
   handleDisagree() {
