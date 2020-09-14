@@ -28,6 +28,10 @@ const useStyles = makeStyles({
   container: {
     maxHeight: 440,
   },
+  table: {
+    //minWidth: 700,
+    //tableLayout: "fixed",
+  },
 });
 
 function Stats(props) {
@@ -153,7 +157,7 @@ function Stats(props) {
       {rows && rows.length > 0 && (
         <Paper className={classes.root}>
           <TableContainer className={classes.container}>
-            <Table stickyHeader aria-label="sticky table">
+            <Table className={classes.table} aria-label="sticky table">
               <TableHead>
                 <TableRow>
                   {columns.map((column) => (
