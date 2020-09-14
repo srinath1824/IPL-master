@@ -95,7 +95,9 @@ function Stats(props) {
               return createData(
                 d.playerName,
                 d.role,
-                d["Dream11"] ? d["Dream11"] / d.matches.length : 0
+                d["Dream11"] / d.matches.length
+                  ? d["Dream11"] / d.matches.length
+                  : 0
               );
             });
           pointsTableData.sort(
