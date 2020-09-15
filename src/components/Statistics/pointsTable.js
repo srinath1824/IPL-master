@@ -8,7 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import axios from "axios";
-require("dotenv").config();
+import { SERVER_URL } from "../constants";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -41,7 +41,7 @@ function PointsTable() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.SERVER_URL}/api/getPointsTable`)
+      .get(`${SERVER_URL}/api/getPointsTable`)
       .then((res) => {
         console.log("RESPONSE", res.data[0]);
         let tableData =

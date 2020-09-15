@@ -10,7 +10,7 @@ import axios from "axios";
 import Button from "@material-ui/core/Button";
 import CompareCard from "./compareCard";
 import CompareStats from "./compareStats";
-require("dotenv").config();
+import { SERVER_URL } from "../constants";
 
 const DropDown = ({ value, change: handleChange, name, label, disabled }) => (
   <Select
@@ -54,7 +54,7 @@ class Compare extends Component {
     ) {
       //api call
       axios
-        .get(`${process.env.SERVER_URL}/api/getdata/${e.target.value}`)
+        .get(`${SERVER_URL}/api/getdata/${e.target.value}`)
         .then((res) => {
           this.props.setTeamData({
             name: e.target.value,

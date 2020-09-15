@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import MenuItem from "@material-ui/core/MenuItem";
 import actionTypes from "../actions";
 import axios from "axios";
-require("dotenv").config();
+import { SERVER_URL } from "../constants";
 
 const useStyles = makeStyles({
   root: {
@@ -83,7 +83,7 @@ function Stats(props) {
     ) {
       //api call
       await axios
-        .get(`${process.env.SERVER_URL}/api/getdata/${e.target.value}`)
+        .get(`${SERVER_URL}/api/getdata/${e.target.value}`)
         .then((res) => {
           props.setTeamData({
             name: e.target.value,

@@ -1,10 +1,10 @@
 import axios from "axios";
-require("dotenv").config();
+import { SERVER_URL } from "../constants";
 
 function teamsDataApiCall(teamName) {
   return new Promise(async (resolve, reject) => {
     await axios
-      .get(`${process.env.SERVER_URL}/api/getdata/${teamName}`)
+      .get(`${SERVER_URL}/api/getdata/${teamName}`)
       .then((res) => {
         resolve(res);
       })
