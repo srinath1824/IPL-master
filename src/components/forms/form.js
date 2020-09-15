@@ -15,6 +15,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import Alert from "@material-ui/lab/Alert";
+import { SERVER_URL } from "../constants";
 
 class Form extends Component {
   constructor(props) {
@@ -67,9 +68,8 @@ class Form extends Component {
     if (count === 0) {
       this.setState({ error: "" });
     }
-    console.log("111111111", error);
     if (count === 0) {
-      Axios.post("http://localhost:5000/api/savedata", this.state.playerDetails)
+      Axios.post(`${SERVER_URL}/api/savedata`, this.state.playerDetails)
         .then((res) => {
           console.log(res);
           this.setState({ playerDetails: clearForm, formSubmited: true });
