@@ -2,8 +2,8 @@ import axios from "axios";
 import { SERVER_URL } from "../constants";
 
 function teamsDataApiCall(teamName) {
-  return new Promise(async (resolve, reject) => {
-    await axios
+  return new Promise((resolve, reject) => {
+    axios
       .get(`${SERVER_URL}/api/getdata/${teamName}`)
       .then((res) => {
         resolve(res);
