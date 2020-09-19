@@ -17,7 +17,7 @@ class Teams extends Component {
   constructor(props) {
     super(props);
   }
-  async componentDidMount() {
+  componentDidMount() {
     window.scrollTo(0, 0);
     if (this.props.playerSelected) {
       this.props.setPlayerSelected("");
@@ -26,7 +26,7 @@ class Teams extends Component {
       this.props.teamsdata[sessionStorage.getItem("teamSelected")].length === 0
     ) {
       let team = sessionStorage.getItem("teamSelected");
-      await teamsDataApiCall(team)
+      teamsDataApiCall(team)
         .then((res) => {
           this.props.loadingSelected(false);
           this.props.getTeamSelected(res.data);

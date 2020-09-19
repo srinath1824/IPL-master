@@ -49,7 +49,7 @@ class Dashboard extends Component {
     this.props.history.push("Donate");
   }
 
-  async handleClick(team) {
+  handleClick(team) {
     this.props.setTeamSelected(team.name);
     sessionStorage.setItem("teamSelected", team.name);
     sessionStorage.setItem("jerseyColor", team.color);
@@ -64,7 +64,7 @@ class Dashboard extends Component {
         players: this.props.iplTeams[team.name],
       });
     } else {
-      await teamsDataApiCall(team.name)
+      teamsDataApiCall(team.name)
         .then((res) => {
           this.props.loadingSelected(false);
           this.props.getTeamSelected(res.data);

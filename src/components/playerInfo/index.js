@@ -18,11 +18,11 @@ class PlayerInfo extends Component {
     }
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { teamSelected } = this.props;
     this.props.loadingSelected(true);
     if (!teamSelected) {
-      await teamsDataApiCall(sessionStorage.getItem("teamSelected"))
+      teamsDataApiCall(sessionStorage.getItem("teamSelected"))
         .then((res) => {
           this.props.loadingSelected(false);
           this.props.getTeamSelected(res.data);
