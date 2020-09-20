@@ -17,6 +17,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import HomeIcon from "@material-ui/icons/Home";
 import CompareIcon from "@material-ui/icons/Compare";
 import SportsCricketIcon from "@material-ui/icons/SportsCricket";
+import ScheduleIcon from "@material-ui/icons/Schedule";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
@@ -167,6 +168,7 @@ function Header(props) {
             { menu: "Compare", icon: <CompareIcon /> },
             { menu: "Points", icon: <StatsIcon /> },
             { menu: "Dream11", icon: <SportsCricketIcon /> },
+            { menu: "Schedule", icon: <ScheduleIcon /> },
             // { menu: "Donate", icon: <MonetizationOnIcon /> },
           ].map((text, index) => (
             <ListItem

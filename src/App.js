@@ -9,6 +9,7 @@ import PlayerInfo from "./components/playerInfo";
 import Compare from "./components/Compares";
 import Stats from "./components/Statistics/stats";
 import PointsTable from "./components/Statistics/pointsTable";
+import ScheduleTable from "./components/Statistics/schedule";
 import Donate from "./components/Donate";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route exact path="/Donate" component={Donate} />
             <Route exact path="/Points" component={PointsTable} />
             <Route exact path="/Dream11" component={Stats} />
+            <Route exact path="/Schedule" component={ScheduleTable} />
           </div>
         </Switch>
       </Router>
