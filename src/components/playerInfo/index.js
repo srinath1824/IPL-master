@@ -93,7 +93,7 @@ class PlayerInfo extends Component {
                 src={`/Teams/${this.props.teamSelected}/${
                   playerInfo && playerInfo.playerName
                 }.png`}
-                width="180px"
+                width="200px"
               />
             </Grid>
             <Grid
@@ -109,7 +109,7 @@ class PlayerInfo extends Component {
                   fontWeight: 900,
                   alignItems: "center",
                   justifyContent: "center",
-                  margin: "30px 0px 0px 0px",
+                  //margin: "30px 0px 0px 0px",
                   fontSize: "x-large",
                 }}
               >
