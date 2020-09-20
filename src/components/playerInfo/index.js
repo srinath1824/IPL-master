@@ -56,6 +56,7 @@ class PlayerInfo extends Component {
       playerInfo.matches.map((match) => {
         let bat = {
           Date: match.Date,
+          Venue: match.Venue,
           Matches: match.team,
           Score: match.Score,
           Balls: match.Balls,
@@ -66,6 +67,7 @@ class PlayerInfo extends Component {
         };
         let bowl = {
           Date: match.Date,
+          Venue: match.Venue,
           Overs: match.Overs,
           Runs: match.Runs,
           Wickets: match.Wickets,

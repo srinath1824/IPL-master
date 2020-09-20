@@ -8,6 +8,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import axios from "axios";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { SERVER_URL } from "../constants";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -38,20 +40,21 @@ const useStyles = makeStyles({
 function PointsTable() {
   const classes = useStyles();
   const [rows, setRows] = React.useState([]);
+  const [open, setOpen] = React.useState(true);
 
   useEffect(() => {
+    setOpen(true);
     axios
       .get(`${SERVER_URL}/api/getPointsTable`)
       .then((res) => {
-        console.log("RESPONSE", res.data[0]);
         let tableData =
           res &&
           res.data &&
           res.data[0]["Points Table"].map((data) => {
             return data;
           });
-        console.log("TABLE DATA", tableData);
         setRows(tableData);
+        setOpen(false);
       })
       .catch((err) => {
         console.log("ERROR", err);
@@ -59,32 +62,40 @@ function PointsTable() {
   }, []);
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Team</StyledTableCell>
-            <StyledTableCell>Played</StyledTableCell>
-            <StyledTableCell>Won</StyledTableCell>
-            <StyledTableCell>Lost</StyledTableCell>
-            <StyledTableCell>Points</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows
-            .sort((x, y) => y.Points - x.Points)
-            .map((row) => (
-              <StyledTableRow key={row.name}>
-                <StyledTableCell>{row.Team}</StyledTableCell>
-                <StyledTableCell>{row.Played}</StyledTableCell>
-                <StyledTableCell>{row.Won}</StyledTableCell>
-                <StyledTableCell>{row.Lost}</StyledTableCell>
-                <StyledTableCell>{row.Points}</StyledTableCell>
-              </StyledTableRow>
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      {rows && rows.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Team</StyledTableCell>
+                <StyledTableCell>Played</StyledTableCell>
+                <StyledTableCell>Won</StyledTableCell>
+                <StyledTableCell>Lost</StyledTableCell>
+                <StyledTableCell>Points</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows
+                .sort((x, y) => y.Points - x.Points)
+                .map((row) => (
+                  <StyledTableRow key={row.name}>
+                    <StyledTableCell>{row.Team}</StyledTableCell>
+                    <StyledTableCell>{row.Played}</StyledTableCell>
+                    <StyledTableCell>{row.Won}</StyledTableCell>
+                    <StyledTableCell>{row.Lost}</StyledTableCell>
+                    <StyledTableCell>{row.Points}</StyledTableCell>
+                  </StyledTableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Backdrop className={classes.backdrop} open={open}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
+    </div>
   );
 }
 

@@ -46,10 +46,13 @@ class Teams extends Component {
   render() {
     let members = [];
     let teamOrder = ["Wicket Keeper", "Batsman", "All-Rounder", "Bowler"];
+    let sortedList = this.props.team.sort(
+      (a, b) => b.matches.length - a.matches.length
+    );
     if (this.props.team.length > 0) {
       teamOrder.map((o) => {
         members.push(
-          this.props.team.map((m) => {
+          sortedList.map((m) => {
             let totalRuns = 0;
             let totalWickets = 0;
             if (o === m.role) {
@@ -95,8 +98,8 @@ class Teams extends Component {
                             <Grid item xs={m.Captain || m.overseas ? 10 : 12}>
                               <img
                                 src={`/Teams/${this.props.teamSelected}/${m.playerName}.png`}
-                                width="180px"
-                                height="180px"
+                                width="150px"
+                                height="150px"
                               />
                             </Grid>
                           </Grid>
@@ -118,6 +121,7 @@ class Teams extends Component {
                               >
                                 {m.role}
                               </div>
+                              <div>{"Dream11 Rank"}</div>
                             </div>
                           </div>
                         </Grid>

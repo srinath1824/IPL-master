@@ -167,7 +167,7 @@ function Header(props) {
             { menu: "Compare", icon: <CompareIcon /> },
             { menu: "Points", icon: <StatsIcon /> },
             { menu: "Dream11", icon: <SportsCricketIcon /> },
-            { menu: "Donate", icon: <MonetizationOnIcon /> },
+            // { menu: "Donate", icon: <MonetizationOnIcon /> },
           ].map((text, index) => (
             <ListItem
               button

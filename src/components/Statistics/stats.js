@@ -15,6 +15,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import { connect } from "react-redux";
 import MenuItem from "@material-ui/core/MenuItem";
 import actionTypes from "../actions";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import axios from "axios";
 import { SERVER_URL } from "../constants";
 
@@ -41,6 +42,7 @@ function Stats(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [rows, setRows] = React.useState([]);
   const [selectTeam, setSelectTeam] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const columns = [
     { id: "Player Name", label: "Player Name" },
@@ -77,6 +79,8 @@ function Stats(props) {
   const changeHandler = async (e) => {
     setSelectTeam(e.target.value);
     let pointsTableData = [];
+    setRows([]);
+    setLoading(true);
     if (
       props.teamsData[e.target.value] &&
       !props.teamsData[e.target.value].length > 0
@@ -120,6 +124,7 @@ function Stats(props) {
       pointsTableData.sort((x, y) => y["Dream11 Points"] - x["Dream11 Points"]);
       setRows(pointsTableData);
     }
+    setLoading(false);
   };
 
   let teams =
@@ -157,6 +162,11 @@ function Stats(props) {
         <Grid item xs={12} sm={4} lg={3} />
       </Grid>
       <br />
+      {loading && (
+        <div style={{ textAlign: "center" }}>
+          <CircularProgress />
+        </div>
+      )}
       {rows && rows.length > 0 && (
         <Paper className={classes.root}>
           <TableContainer className={classes.container}>

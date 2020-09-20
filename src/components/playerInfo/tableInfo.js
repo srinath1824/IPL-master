@@ -36,6 +36,7 @@ export default function TableInfo(props) {
   const classes = useStyles();
   let tableColsBat = [
     "Date",
+    "Venue",
     "Matches",
     "Score",
     "Balls",
@@ -46,6 +47,7 @@ export default function TableInfo(props) {
   ];
   let tableColsBowl = [
     "Date",
+    "Venue",
     "Overs",
     "Runs",
     "Wickets",
