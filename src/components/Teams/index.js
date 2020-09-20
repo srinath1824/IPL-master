@@ -98,8 +98,8 @@ class Teams extends Component {
                             <Grid item xs={m.Captain || m.overseas ? 10 : 12}>
                               <img
                                 src={`/Teams/${this.props.teamSelected}/${m.playerName}.png`}
-                                width="150px"
-                                height="150px"
+                                width="180px"
+                                height="180px"
                               />
                             </Grid>
                           </Grid>
@@ -110,7 +110,7 @@ class Teams extends Component {
                           <div style={{ textAlign: "center" }}>
                             <div
                               style={{
-                                fontSize: "1rem",
+                                fontSize: "1.5rem",
                                 color: "white",
                                 fontWeight: "bold",
                               }}
@@ -121,7 +121,6 @@ class Teams extends Component {
                               >
                                 {m.role}
                               </div>
-                              <div>{"Dream11 Rank"}</div>
                             </div>
                           </div>
                         </Grid>

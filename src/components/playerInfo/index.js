@@ -56,8 +56,8 @@ class PlayerInfo extends Component {
       playerInfo.matches.map((match) => {
         let bat = {
           Date: match.Date,
+          VS: match.team,
           Venue: match.Venue,
-          Matches: match.team,
           Score: match.Score,
           Balls: match.Balls,
           SR: match.SR,
@@ -67,6 +67,7 @@ class PlayerInfo extends Component {
         };
         let bowl = {
           Date: match.Date,
+          VS: match.team,
           Venue: match.Venue,
           Overs: match.Overs,
           Runs: match.Runs,
@@ -185,8 +186,12 @@ class PlayerInfo extends Component {
         </Card>
         <h1>Batting</h1>
         <TableInfo data={batStats} name="bat" />
-        <h1>Bowling</h1>
-        <TableInfo data={bowlStats} name="bowl" />
+        {playerInfo && ["Bowler", "All-Rounder"].includes(playerInfo.role) && (
+          <>
+            <h1>Bowling</h1>
+            <TableInfo data={bowlStats} name="bowl" />
+          </>
+        )}
       </Container>
     );
   }
